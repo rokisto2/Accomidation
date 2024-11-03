@@ -1,0 +1,115 @@
+### Add a new dormitory
+POST http://127.0.0.1:8000/api/dormitories/
+Content-Type: application/json
+
+{
+  "name": "Dormitory A",
+  "address": "123 Dormitory Lane",
+  "description": "A dormitory for students"
+}
+
+###
+
+### Add a new student
+POST http://127.0.0.1:8000/api/students/
+Content-Type: application/json
+
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "birth_date": "2000-01-01",
+  "contact_info": "john.doe@example.com",
+  "course": 1,
+  "is_non_local": true,
+  "password": "student_password",
+  "gender": "male"
+}
+
+###
+
+### Add another student
+POST http://127.0.0.1:8000/api/students/
+Content-Type: application/json
+
+{
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "birth_date": "2001-02-02",
+  "contact_info": "jane.doe@example.com",
+  "course": 2,
+  "is_non_local": false,
+  "password": "student_password",
+  "gender": "female"
+}
+
+###
+
+### Add a third student
+POST http://127.0.0.1:8000/api/students/
+Content-Type: application/json
+
+{
+  "first_name": "Alice",
+  "last_name": "Smith",
+  "birth_date": "2002-03-03",
+  "contact_info": "alice.smith@example.com",
+  "course": 3,
+  "is_non_local": true,
+  "password": "student_password",
+  "gender": "female"
+}
+
+###
+
+### Add a fourth student
+POST http://127.0.0.1:8000/api/students/
+Content-Type: application/json
+
+{
+  "first_name": "Bob",
+  "last_name": "Johnson",
+  "birth_date": "2003-04-04",
+  "contact_info": "bob.johnson@example.com",
+  "course": 4,
+  "is_non_local": false,
+  "password": "student_password",
+  "gender": "male"
+}
+
+###
+
+### Add a new room
+POST http://127.0.0.1:8000/api/rooms/
+Content-Type: application/json
+
+{
+  "dormitory_id": 1,
+  "room_type": "male",
+  "room_number": 101,
+  "bed_count": 2
+}
+
+###
+
+### Add another room
+POST http://127.0.0.1:8000/api/rooms/
+Content-Type: application/json
+
+{
+  "dormitory_id": 1,
+  "room_type": "female",
+  "room_number": 102,
+  "bed_count": 3
+}
+
+###
+
+### Distribute students to rooms
+POST http://127.0.0.1:8000/api/accommodations/distribute
+Content-Type: application/json
+
+###
+
+### Evict a student
+DELETE http://127.0.0.1:8000/api/accommodations/evict/1
+Content-Type: application/json
