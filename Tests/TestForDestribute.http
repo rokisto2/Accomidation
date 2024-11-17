@@ -110,6 +110,3 @@ Content-Type: application/json
 
 ###
 
-### Evict a student
-DELETE http://127.0.0.1:8000/api/accommodations/evict/1
-Content-Type: application/json

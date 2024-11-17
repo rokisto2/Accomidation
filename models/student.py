@@ -13,6 +13,7 @@ class Student(User):
 
     birth_date = Column(Date)
     course = Column(Integer)
+    grup = Column(Integer)
     is_non_local = Column(Boolean, default=False)
     gender = Column(Enum(GenderEnum), nullable=False)
 

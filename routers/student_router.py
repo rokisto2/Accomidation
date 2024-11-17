@@ -9,9 +9,10 @@ db_manager = get_db_manager()
 class StudentCreate(BaseModel):
     first_name: str
     last_name: str
-    birth_date: str
+    birth_date: date
     contact_info: str
     course: int
+    grup: int
     is_non_local: bool
     password: str
     gender: str
@@ -23,6 +24,7 @@ class StudentResponse(BaseModel):
     birth_date: date
     contact_info: str
     course: int
+    grup: int
     is_non_local: bool
     gender: str
 
