@@ -5,3 +5,4 @@ from .violation_repo import ViolationRepository
 from .administration_repo import AdministrationRepository
 from .accommodation_repo import AccommodationRepository
 from .deanery_staff_repo import DeaneryStaffRepository
+from .floor_repo import FloorRepository

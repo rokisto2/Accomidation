@@ -4,8 +4,8 @@ class RoomRepository:
     def __init__(self, session):
         self.session = session
 
-    def add_room(self, dormitory_id, room_number, room_type, bed_count):
-        room = Room(dormitory_id=dormitory_id, room_number=room_number, room_type=room_type, bed_count=bed_count)
+    def add_room(self, floor_id, room_number, room_type, bed_count):
+        room = Room(floor_id=floor_id, room_number=room_number, room_type=room_type, bed_count=bed_count)
         self.session.add(room)
         self.session.commit()
 
