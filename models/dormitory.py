@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.orm import relationship
 from .base import Base
 
-
 class Dormitory(Base):
     __tablename__ = 'dormitories'
 
@@ -11,8 +10,7 @@ class Dormitory(Base):
     address = Column(String(255), nullable=False)
     description = Column(Text)
 
-    # Связь с комнатами
-    rooms = relationship('Room', back_populates='dormitory')
+    floors = relationship('Floor', back_populates='dormitory', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"<Dormitory(id={self.id}, name={self.name})>"

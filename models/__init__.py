@@ -6,4 +6,4 @@ from .administration import Administration
 from .accommodation import Accommodation
 from .base import Base
 from .deaneryStaff import DeaneryStaff
-
+from .floor import Floor
