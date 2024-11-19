@@ -52,6 +52,12 @@ def delete_accommodation(accommodation_id: int):
     db_manager.accommodations.delete_accommodation(accommodation_id)
     return accommodation
 
+@router.get("/by_dormitory/{dormitory_id}")
+async def read_accommodations_by_dormitory(dormitory_id: int):
+    # Replace with actual database query
+    accommodations = db_manager.accommodations.get_accommodations_by_dormitory_id(dormitory_id)
+    return accommodations
+
 @router.post("/distribute", response_model=list[AccommodationResponse])
 def distribute_students():
     accommodations = distributeStudents.distribute_students(db_manager)
@@ -72,3 +78,22 @@ def evict_student(student_id: int):
 
     db_manager.accommodations.delete_accommodation(accommodation.id)
     return accommodation
+
+@router.delete("/evict_all/", response_model=AccommodationResponse)
+def evict_student():
+    accommodations1 = db_manager.accommodations.get_all_accommodations()
+    if not accommodations1:
+        raise HTTPException(status_code=404, detail="Accommodation not found")
+
+    # Update the room's occupied beds count
+    for accommodation in accommodations1:
+
+        room = db_manager.rooms.get_room_by_id(accommodation.room_id)
+        if room:
+            room.occupied_beds -= 1
+            db_manager.rooms.update_room(room.id, occupied_beds=room.occupied_beds)
+
+        db_manager.accommodations.delete_accommodation(accommodation.id)
+
+    return accommodations1
+

@@ -1,6 +1,6 @@
 from sqlalchemy import func
 
-from models import Student, Violation
+from models import Student, Violation, Accommodation
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -9,7 +9,7 @@ class StudentRepository:
     def __init__(self, session):
         self.session = session
 
-    def add_student(self, first_name, last_name, birth_date, contact_info, course, is_non_local, password, gender):
+    def add_student(self, first_name, last_name, birth_date, contact_info, course, grup, is_non_local, password, gender):
         hashed_password = pwd_context.hash(password)
         student = Student(
             first_name=first_name,
@@ -17,6 +17,7 @@ class StudentRepository:
             birth_date=birth_date,
             contact_info=contact_info,
             course=course,
+            grup = grup,
             is_non_local=is_non_local,
             hashed_password=hashed_password,
             gender=gender
@@ -51,3 +52,9 @@ class StudentRepository:
             Student,
             func.count(Violation.id).label('violation_count')
             ).outerjoin(Violation, Student.id == Violation.student_id).group_by(Student.id).order_by(Student.course,'violation_count').all()
+
+    def get_unassigned_students(self):
+        subquery = self.session.query(Accommodation.student_id).subquery()
+        unassigned_students = self.session.query(Student).filter(Student.id.notin_(subquery)).all()
+        print(unassigned_students)
+        return unassigned_students

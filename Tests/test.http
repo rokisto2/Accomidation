@@ -56,6 +56,19 @@ Content-Type: application/json
   "password": "secure_password"
 }
 
+
+###
+
+POST http://127.0.0.1:8000/api/deanery_staff/
+Content-Type: application/json
+
+{
+  "first_name": "Alice",
+  "last_name": "Johnson",
+  "contact_info": "1111",
+  "password": "1111"
+}
+
 ###
 
 ### Get all DeaneryStaff

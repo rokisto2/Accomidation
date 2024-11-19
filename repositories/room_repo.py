@@ -27,3 +27,6 @@ class RoomRepository:
         if room:
             self.session.delete(room)
             self.session.commit()
+
+    def get_rooms_by_floor_id(self, floor_id: int):
+        return self.session.query(Room).filter_by(floor_id=floor_id).all()

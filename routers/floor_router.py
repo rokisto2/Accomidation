@@ -45,3 +45,8 @@ def delete_floor(floor_id: int):
         raise HTTPException(status_code=404, detail="Floor not found")
     db_manager.floors.delete_floor(floor_id)
     return floor
+
+@router.get("/by_dormitory/{dormitory_id}", response_model=list[FloorResponse])
+def read_floors_by_dormitory(dormitory_id: int):
+    floors = db_manager.floors.get_floors_by_dormitory_id(dormitory_id)
+    return floors

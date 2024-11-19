@@ -1,1 +1,2246 @@
-{"openapi":"3.1.0","info":{"title":"FastAPI","version":"0.1.0"},"paths":{"/api/students/":{"get":{"tags":["students"],"summary":"Read Students","operationId":"read_students_api_students__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/StudentResponse"},"type":"array","title":"Response Read Students Api Students  Get"}}}}}},"post":{"tags":["students"],"summary":"Create Student","operationId":"create_student_api_students__post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/StudentCreate"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/StudentResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/dormitories/":{"get":{"tags":["dormitories"],"summary":"Read Dormitories","operationId":"read_dormitories_api_dormitories__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/DormitoryResponse"},"type":"array","title":"Response Read Dormitories Api Dormitories  Get"}}}}}},"post":{"tags":["dormitories"],"summary":"Create Dormitory","operationId":"create_dormitory_api_dormitories__post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DormitoryCreate"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DormitoryResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/dormitories/{dormitory_id}":{"get":{"tags":["dormitories"],"summary":"Read Dormitory","operationId":"read_dormitory_api_dormitories__dormitory_id__get","parameters":[{"name":"dormitory_id","in":"path","required":true,"schema":{"type":"integer","title":"Dormitory Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DormitoryResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"put":{"tags":["dormitories"],"summary":"Update Dormitory","operationId":"update_dormitory_api_dormitories__dormitory_id__put","parameters":[{"name":"dormitory_id","in":"path","required":true,"schema":{"type":"integer","title":"Dormitory Id"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DormitoryCreate"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DormitoryResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"delete":{"tags":["dormitories"],"summary":"Delete Dormitory","operationId":"delete_dormitory_api_dormitories__dormitory_id__delete","parameters":[{"name":"dormitory_id","in":"path","required":true,"schema":{"type":"integer","title":"Dormitory Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DormitoryResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/rooms/":{"get":{"tags":["rooms"],"summary":"Read Rooms","operationId":"read_rooms_api_rooms__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/RoomResponse"},"type":"array","title":"Response Read Rooms Api Rooms  Get"}}}}}},"post":{"tags":["rooms"],"summary":"Create Room","operationId":"create_room_api_rooms__post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RoomCreate"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/RoomResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/rooms/{room_id}":{"get":{"tags":["rooms"],"summary":"Read Room","operationId":"read_room_api_rooms__room_id__get","parameters":[{"name":"room_id","in":"path","required":true,"schema":{"type":"integer","title":"Room Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/RoomResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"put":{"tags":["rooms"],"summary":"Update Room","operationId":"update_room_api_rooms__room_id__put","parameters":[{"name":"room_id","in":"path","required":true,"schema":{"type":"integer","title":"Room Id"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RoomCreate"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/RoomResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"delete":{"tags":["rooms"],"summary":"Delete Room","operationId":"delete_room_api_rooms__room_id__delete","parameters":[{"name":"room_id","in":"path","required":true,"schema":{"type":"integer","title":"Room Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/RoomResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/violations/":{"get":{"tags":["violations"],"summary":"Read Violations","operationId":"read_violations_api_violations__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/ViolationResponse"},"type":"array","title":"Response Read Violations Api Violations  Get"}}}}}},"post":{"tags":["violations"],"summary":"Create Violation","operationId":"create_violation_api_violations__post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ViolationCreate"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ViolationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/violations/{violation_id}":{"get":{"tags":["violations"],"summary":"Read Violation","operationId":"read_violation_api_violations__violation_id__get","parameters":[{"name":"violation_id","in":"path","required":true,"schema":{"type":"integer","title":"Violation Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ViolationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"put":{"tags":["violations"],"summary":"Update Violation","operationId":"update_violation_api_violations__violation_id__put","parameters":[{"name":"violation_id","in":"path","required":true,"schema":{"type":"integer","title":"Violation Id"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ViolationCreate"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ViolationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"delete":{"tags":["violations"],"summary":"Delete Violation","operationId":"delete_violation_api_violations__violation_id__delete","parameters":[{"name":"violation_id","in":"path","required":true,"schema":{"type":"integer","title":"Violation Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/ViolationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/administration/":{"get":{"tags":["administration"],"summary":"Read Administrations","operationId":"read_administrations_api_administration__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/AdministrationResponse"},"type":"array","title":"Response Read Administrations Api Administration  Get"}}}}}},"post":{"tags":["administration"],"summary":"Create Administration","operationId":"create_administration_api_administration__post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdministrationCreate"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdministrationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/administration/{administration_id}":{"get":{"tags":["administration"],"summary":"Read Administration","operationId":"read_administration_api_administration__administration_id__get","parameters":[{"name":"administration_id","in":"path","required":true,"schema":{"type":"integer","title":"Administration Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdministrationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"put":{"tags":["administration"],"summary":"Update Administration","operationId":"update_administration_api_administration__administration_id__put","parameters":[{"name":"administration_id","in":"path","required":true,"schema":{"type":"integer","title":"Administration Id"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdministrationCreate"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdministrationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"delete":{"tags":["administration"],"summary":"Delete Administration","operationId":"delete_administration_api_administration__administration_id__delete","parameters":[{"name":"administration_id","in":"path","required":true,"schema":{"type":"integer","title":"Administration Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdministrationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/accommodations/":{"get":{"tags":["accommodations"],"summary":"Read Accommodations","operationId":"read_accommodations_api_accommodations__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/AccommodationResponse"},"type":"array","title":"Response Read Accommodations Api Accommodations  Get"}}}}}},"post":{"tags":["accommodations"],"summary":"Create Accommodation","operationId":"create_accommodation_api_accommodations__post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccommodationCreate"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccommodationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/accommodations/{accommodation_id}":{"get":{"tags":["accommodations"],"summary":"Read Accommodation","operationId":"read_accommodation_api_accommodations__accommodation_id__get","parameters":[{"name":"accommodation_id","in":"path","required":true,"schema":{"type":"integer","title":"Accommodation Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccommodationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"put":{"tags":["accommodations"],"summary":"Update Accommodation","operationId":"update_accommodation_api_accommodations__accommodation_id__put","parameters":[{"name":"accommodation_id","in":"path","required":true,"schema":{"type":"integer","title":"Accommodation Id"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccommodationCreate"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccommodationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}},"delete":{"tags":["accommodations"],"summary":"Delete Accommodation","operationId":"delete_accommodation_api_accommodations__accommodation_id__delete","parameters":[{"name":"accommodation_id","in":"path","required":true,"schema":{"type":"integer","title":"Accommodation Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccommodationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/accommodations/distribute":{"post":{"tags":["accommodations"],"summary":"Distribute Students","operationId":"distribute_students_api_accommodations_distribute_post","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/AccommodationResponse"},"type":"array","title":"Response Distribute Students Api Accommodations Distribute Post"}}}}}}},"/api/accommodations/evict/{student_id}":{"delete":{"tags":["accommodations"],"summary":"Evict Student","operationId":"evict_student_api_accommodations_evict__student_id__delete","parameters":[{"name":"student_id","in":"path","required":true,"schema":{"type":"integer","title":"Student Id"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccommodationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/auth/token":{"post":{"tags":["auth"],"summary":"Login For Access Token","operationId":"login_for_access_token_api_auth_token_post","requestBody":{"content":{"application/x-www-form-urlencoded":{"schema":{"$ref":"#/components/schemas/Body_login_for_access_token_api_auth_token_post"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/deanery_staff/":{"get":{"tags":["deanery_staff"],"summary":"Read Deanery Staff","operationId":"read_deanery_staff_api_deanery_staff__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/DeaneryStaffResponse"},"type":"array","title":"Response Read Deanery Staff Api Deanery Staff  Get"}}}}}},"post":{"tags":["deanery_staff"],"summary":"Create Deanery Staff","operationId":"create_deanery_staff_api_deanery_staff__post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/DeaneryStaffCreate"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/DeaneryStaffResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}}},"components":{"schemas":{"AccommodationCreate":{"properties":{"student_id":{"type":"integer","title":"Student Id"},"room_id":{"type":"integer","title":"Room Id"},"date_from":{"type":"string","format":"date","title":"Date From"}},"type":"object","required":["student_id","room_id","date_from"],"title":"AccommodationCreate"},"AccommodationResponse":{"properties":{"student_id":{"type":"integer","title":"Student Id"},"room_id":{"type":"integer","title":"Room Id"},"date_from":{"type":"string","format":"date","title":"Date From"}},"type":"object","required":["student_id","room_id","date_from"],"title":"AccommodationResponse"},"AdministrationCreate":{"properties":{"first_name":{"type":"string","title":"First Name"},"last_name":{"type":"string","title":"Last Name"},"contact_info":{"type":"string","title":"Contact Info"},"dormitory_id":{"type":"integer","title":"Dormitory Id"},"password":{"type":"string","title":"Password"},"contributions":{"type":"integer","title":"Contributions","default":0}},"type":"object","required":["first_name","last_name","contact_info","dormitory_id","password"],"title":"AdministrationCreate"},"AdministrationResponse":{"properties":{"id":{"type":"integer","title":"Id"},"first_name":{"type":"string","title":"First Name"},"last_name":{"type":"string","title":"Last Name"},"contact_info":{"type":"string","title":"Contact Info"},"dormitory_id":{"type":"integer","title":"Dormitory Id"},"contributions":{"type":"integer","title":"Contributions"}},"type":"object","required":["id","first_name","last_name","contact_info","dormitory_id","contributions"],"title":"AdministrationResponse"},"Body_login_for_access_token_api_auth_token_post":{"properties":{"grant_type":{"anyOf":[{"type":"string","pattern":"password"},{"type":"null"}],"title":"Grant Type"},"username":{"type":"string","title":"Username"},"password":{"type":"string","title":"Password"},"scope":{"type":"string","title":"Scope","default":""},"client_id":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Client Id"},"client_secret":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Client Secret"}},"type":"object","required":["username","password"],"title":"Body_login_for_access_token_api_auth_token_post"},"DeaneryStaffCreate":{"properties":{"first_name":{"type":"string","title":"First Name"},"last_name":{"type":"string","title":"Last Name"},"contact_info":{"type":"string","title":"Contact Info"},"password":{"type":"string","title":"Password"}},"type":"object","required":["first_name","last_name","contact_info","password"],"title":"DeaneryStaffCreate"},"DeaneryStaffResponse":{"properties":{"id":{"type":"integer","title":"Id"},"first_name":{"type":"string","title":"First Name"},"last_name":{"type":"string","title":"Last Name"},"contact_info":{"type":"string","title":"Contact Info"}},"type":"object","required":["id","first_name","last_name","contact_info"],"title":"DeaneryStaffResponse"},"DormitoryCreate":{"properties":{"name":{"type":"string","title":"Name"},"address":{"type":"string","title":"Address"},"description":{"type":"string","title":"Description"}},"type":"object","required":["name","address","description"],"title":"DormitoryCreate"},"DormitoryResponse":{"properties":{"id":{"type":"integer","title":"Id"},"name":{"type":"string","title":"Name"},"address":{"type":"string","title":"Address"},"description":{"type":"string","title":"Description"}},"type":"object","required":["id","name","address","description"],"title":"DormitoryResponse"},"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"RoomCreate":{"properties":{"dormitory_id":{"type":"integer","title":"Dormitory Id"},"room_type":{"type":"string","title":"Room Type"},"room_number":{"type":"integer","title":"Room Number"},"bed_count":{"type":"integer","title":"Bed Count"}},"type":"object","required":["dormitory_id","room_type","room_number","bed_count"],"title":"RoomCreate"},"RoomResponse":{"properties":{"id":{"type":"integer","title":"Id"},"dormitory_id":{"type":"integer","title":"Dormitory Id"},"room_type":{"type":"string","title":"Room Type"},"room_number":{"type":"integer","title":"Room Number"},"bed_count":{"type":"integer","title":"Bed Count"}},"type":"object","required":["id","dormitory_id","room_type","room_number","bed_count"],"title":"RoomResponse"},"StudentCreate":{"properties":{"first_name":{"type":"string","title":"First Name"},"last_name":{"type":"string","title":"Last Name"},"birth_date":{"type":"string","title":"Birth Date"},"contact_info":{"type":"string","title":"Contact Info"},"course":{"type":"integer","title":"Course"},"is_non_local":{"type":"boolean","title":"Is Non Local"},"password":{"type":"string","title":"Password"},"gender":{"type":"string","title":"Gender"}},"type":"object","required":["first_name","last_name","birth_date","contact_info","course","is_non_local","password","gender"],"title":"StudentCreate"},"StudentResponse":{"properties":{"id":{"type":"integer","title":"Id"},"first_name":{"type":"string","title":"First Name"},"last_name":{"type":"string","title":"Last Name"},"birth_date":{"type":"string","format":"date","title":"Birth Date"},"contact_info":{"type":"string","title":"Contact Info"},"course":{"type":"integer","title":"Course"},"is_non_local":{"type":"boolean","title":"Is Non Local"},"gender":{"type":"string","title":"Gender"}},"type":"object","required":["id","first_name","last_name","birth_date","contact_info","course","is_non_local","gender"],"title":"StudentResponse"},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"},"ViolationCreate":{"properties":{"student_id":{"type":"integer","title":"Student Id"},"description":{"type":"string","title":"Description"},"date":{"type":"string","format":"date","title":"Date"}},"type":"object","required":["student_id","description","date"],"title":"ViolationCreate"},"ViolationResponse":{"properties":{"id":{"type":"integer","title":"Id"},"student_id":{"type":"integer","title":"Student Id"},"description":{"type":"string","title":"Description"},"date":{"type":"string","format":"date","title":"Date"}},"type":"object","required":["id","student_id","description","date"],"title":"ViolationResponse"}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/students/": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Read Students",
+        "operationId": "read_students_api_students__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Students Api Students  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Create Student",
+        "operationId": "create_student_api_students__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students/{student_id}": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Read Student",
+        "operationId": "read_student_api_students__student_id__get",
+        "parameters": [
+          {
+            "name": "student_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Student Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Update Student",
+        "operationId": "update_student_api_students__student_id__put",
+        "parameters": [
+          {
+            "name": "student_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Student Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Delete Student",
+        "operationId": "delete_student_api_students__student_id__delete",
+        "parameters": [
+          {
+            "name": "student_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Student Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dormitories/": {
+      "get": {
+        "tags": [
+          "dormitories"
+        ],
+        "summary": "Read Dormitories",
+        "operationId": "read_dormitories_api_dormitories__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DormitoryResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Dormitories Api Dormitories  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "dormitories"
+        ],
+        "summary": "Create Dormitory",
+        "operationId": "create_dormitory_api_dormitories__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DormitoryCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DormitoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dormitories/{dormitory_id}": {
+      "get": {
+        "tags": [
+          "dormitories"
+        ],
+        "summary": "Read Dormitory",
+        "operationId": "read_dormitory_api_dormitories__dormitory_id__get",
+        "parameters": [
+          {
+            "name": "dormitory_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dormitory Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DormitoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "dormitories"
+        ],
+        "summary": "Update Dormitory",
+        "operationId": "update_dormitory_api_dormitories__dormitory_id__put",
+        "parameters": [
+          {
+            "name": "dormitory_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dormitory Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DormitoryCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DormitoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "dormitories"
+        ],
+        "summary": "Delete Dormitory",
+        "operationId": "delete_dormitory_api_dormitories__dormitory_id__delete",
+        "parameters": [
+          {
+            "name": "dormitory_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dormitory Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DormitoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rooms/": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Read Rooms",
+        "operationId": "read_rooms_api_rooms__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RoomResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Rooms Api Rooms  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Create Room",
+        "operationId": "create_room_api_rooms__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rooms/{room_id}": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Read Room",
+        "operationId": "read_room_api_rooms__room_id__get",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Room Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Update Room",
+        "operationId": "update_room_api_rooms__room_id__put",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Room Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Delete Room",
+        "operationId": "delete_room_api_rooms__room_id__delete",
+        "parameters": [
+          {
+            "name": "room_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Room Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoomResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rooms/by_floor/{floor_id}": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Read Rooms By Floor",
+        "operationId": "read_rooms_by_floor_api_rooms_by_floor__floor_id__get",
+        "parameters": [
+          {
+            "name": "floor_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Floor Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RoomResponse"
+                  },
+                  "title": "Response Read Rooms By Floor Api Rooms By Floor  Floor Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/violations/": {
+      "get": {
+        "tags": [
+          "violations"
+        ],
+        "summary": "Read Violations",
+        "operationId": "read_violations_api_violations__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ViolationResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Violations Api Violations  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "violations"
+        ],
+        "summary": "Create Violation",
+        "operationId": "create_violation_api_violations__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ViolationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViolationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/violations/{violation_id}": {
+      "get": {
+        "tags": [
+          "violations"
+        ],
+        "summary": "Read Violation",
+        "operationId": "read_violation_api_violations__violation_id__get",
+        "parameters": [
+          {
+            "name": "violation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Violation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViolationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "violations"
+        ],
+        "summary": "Update Violation",
+        "operationId": "update_violation_api_violations__violation_id__put",
+        "parameters": [
+          {
+            "name": "violation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Violation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ViolationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViolationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "violations"
+        ],
+        "summary": "Delete Violation",
+        "operationId": "delete_violation_api_violations__violation_id__delete",
+        "parameters": [
+          {
+            "name": "violation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Violation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViolationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/administration/": {
+      "get": {
+        "tags": [
+          "administration"
+        ],
+        "summary": "Read Administrations",
+        "operationId": "read_administrations_api_administration__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AdministrationResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Administrations Api Administration  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "administration"
+        ],
+        "summary": "Create Administration",
+        "operationId": "create_administration_api_administration__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdministrationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/administration/{administration_id}": {
+      "get": {
+        "tags": [
+          "administration"
+        ],
+        "summary": "Read Administration",
+        "operationId": "read_administration_api_administration__administration_id__get",
+        "parameters": [
+          {
+            "name": "administration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Administration Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "administration"
+        ],
+        "summary": "Update Administration",
+        "operationId": "update_administration_api_administration__administration_id__put",
+        "parameters": [
+          {
+            "name": "administration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Administration Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdministrationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "administration"
+        ],
+        "summary": "Delete Administration",
+        "operationId": "delete_administration_api_administration__administration_id__delete",
+        "parameters": [
+          {
+            "name": "administration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Administration Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdministrationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/accommodations/": {
+      "get": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Read Accommodations",
+        "operationId": "read_accommodations_api_accommodations__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AccommodationResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Accommodations Api Accommodations  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Create Accommodation",
+        "operationId": "create_accommodation_api_accommodations__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccommodationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccommodationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/accommodations/{accommodation_id}": {
+      "get": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Read Accommodation",
+        "operationId": "read_accommodation_api_accommodations__accommodation_id__get",
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Accommodation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccommodationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Update Accommodation",
+        "operationId": "update_accommodation_api_accommodations__accommodation_id__put",
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Accommodation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccommodationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccommodationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Delete Accommodation",
+        "operationId": "delete_accommodation_api_accommodations__accommodation_id__delete",
+        "parameters": [
+          {
+            "name": "accommodation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Accommodation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccommodationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/accommodations/distribute": {
+      "post": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Distribute Students",
+        "operationId": "distribute_students_api_accommodations_distribute_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AccommodationResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Distribute Students Api Accommodations Distribute Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/accommodations/evict/{student_id}": {
+      "delete": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Evict Student",
+        "operationId": "evict_student_api_accommodations_evict__student_id__delete",
+        "parameters": [
+          {
+            "name": "student_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Student Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccommodationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/token": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token_api_auth_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token_api_auth_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/deanery_staff/": {
+      "get": {
+        "tags": [
+          "deanery_staff"
+        ],
+        "summary": "Read Deanery Staff",
+        "operationId": "read_deanery_staff_api_deanery_staff__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DeaneryStaffResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Deanery Staff Api Deanery Staff  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "deanery_staff"
+        ],
+        "summary": "Create Deanery Staff",
+        "operationId": "create_deanery_staff_api_deanery_staff__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeaneryStaffCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeaneryStaffResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/floors/": {
+      "get": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Read Floors",
+        "operationId": "read_floors_api_floors__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FloorResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Floors Api Floors  Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Create Floor",
+        "operationId": "create_floor_api_floors__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FloorCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FloorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/floors/{floor_id}": {
+      "get": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Read Floor",
+        "operationId": "read_floor_api_floors__floor_id__get",
+        "parameters": [
+          {
+            "name": "floor_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Floor Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FloorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Update Floor",
+        "operationId": "update_floor_api_floors__floor_id__put",
+        "parameters": [
+          {
+            "name": "floor_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Floor Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FloorCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FloorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Delete Floor",
+        "operationId": "delete_floor_api_floors__floor_id__delete",
+        "parameters": [
+          {
+            "name": "floor_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Floor Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FloorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/floors/by_dormitory/{dormitory_id}": {
+      "get": {
+        "tags": [
+          "floors"
+        ],
+        "summary": "Read Floors By Dormitory",
+        "operationId": "read_floors_by_dormitory_api_floors_by_dormitory__dormitory_id__get",
+        "parameters": [
+          {
+            "name": "dormitory_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dormitory Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FloorResponse"
+                  },
+                  "title": "Response Read Floors By Dormitory Api Floors By Dormitory  Dormitory Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccommodationCreate": {
+        "properties": {
+          "student_id": {
+            "type": "integer",
+            "title": "Student Id"
+          },
+          "room_id": {
+            "type": "integer",
+            "title": "Room Id"
+          },
+          "date_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Date From"
+          }
+        },
+        "type": "object",
+        "required": [
+          "student_id",
+          "room_id",
+          "date_from"
+        ],
+        "title": "AccommodationCreate"
+      },
+      "AccommodationResponse": {
+        "properties": {
+          "student_id": {
+            "type": "integer",
+            "title": "Student Id"
+          },
+          "room_id": {
+            "type": "integer",
+            "title": "Room Id"
+          },
+          "date_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Date From"
+          }
+        },
+        "type": "object",
+        "required": [
+          "student_id",
+          "room_id",
+          "date_from"
+        ],
+        "title": "AccommodationResponse"
+      },
+      "AdministrationCreate": {
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "contact_info": {
+            "type": "string",
+            "title": "Contact Info"
+          },
+          "dormitory_id": {
+            "type": "integer",
+            "title": "Dormitory Id"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "contributions": {
+            "type": "integer",
+            "title": "Contributions",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "contact_info",
+          "dormitory_id",
+          "password"
+        ],
+        "title": "AdministrationCreate"
+      },
+      "AdministrationResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "contact_info": {
+            "type": "string",
+            "title": "Contact Info"
+          },
+          "dormitory_id": {
+            "type": "integer",
+            "title": "Dormitory Id"
+          },
+          "contributions": {
+            "type": "integer",
+            "title": "Contributions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "contact_info",
+          "dormitory_id",
+          "contributions"
+        ],
+        "title": "AdministrationResponse"
+      },
+      "Body_login_for_access_token_api_auth_token_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_login_for_access_token_api_auth_token_post"
+      },
+      "DeaneryStaffCreate": {
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "contact_info": {
+            "type": "string",
+            "title": "Contact Info"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "contact_info",
+          "password"
+        ],
+        "title": "DeaneryStaffCreate"
+      },
+      "DeaneryStaffResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "contact_info": {
+            "type": "string",
+            "title": "Contact Info"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "contact_info"
+        ],
+        "title": "DeaneryStaffResponse"
+      },
+      "DormitoryCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "address",
+          "description"
+        ],
+        "title": "DormitoryCreate"
+      },
+      "DormitoryResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "address",
+          "description"
+        ],
+        "title": "DormitoryResponse"
+      },
+      "FloorCreate": {
+        "properties": {
+          "dormitory_id": {
+            "type": "integer",
+            "title": "Dormitory Id"
+          },
+          "floor_number": {
+            "type": "integer",
+            "title": "Floor Number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "dormitory_id",
+          "floor_number"
+        ],
+        "title": "FloorCreate"
+      },
+      "FloorResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "dormitory_id": {
+            "type": "integer",
+            "title": "Dormitory Id"
+          },
+          "floor_number": {
+            "type": "integer",
+            "title": "Floor Number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "dormitory_id",
+          "floor_number"
+        ],
+        "title": "FloorResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "RoomCreate": {
+        "properties": {
+          "floor_id": {
+            "type": "integer",
+            "title": "Floor Id"
+          },
+          "room_type": {
+            "type": "string",
+            "title": "Room Type"
+          },
+          "room_number": {
+            "type": "integer",
+            "title": "Room Number"
+          },
+          "bed_count": {
+            "type": "integer",
+            "title": "Bed Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "floor_id",
+          "room_type",
+          "room_number",
+          "bed_count"
+        ],
+        "title": "RoomCreate"
+      },
+      "RoomResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "floor_id": {
+            "type": "integer",
+            "title": "Floor Id"
+          },
+          "room_type": {
+            "type": "string",
+            "title": "Room Type"
+          },
+          "room_number": {
+            "type": "integer",
+            "title": "Room Number"
+          },
+          "bed_count": {
+            "type": "integer",
+            "title": "Bed Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "floor_id",
+          "room_type",
+          "room_number",
+          "bed_count"
+        ],
+        "title": "RoomResponse"
+      },
+      "StudentCreate": {
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Birth Date"
+          },
+          "contact_info": {
+            "type": "string",
+            "title": "Contact Info"
+          },
+          "course": {
+            "type": "integer",
+            "title": "Course"
+          },
+          "grup": {
+            "type": "integer",
+            "title": "Grup"
+          },
+          "is_non_local": {
+            "type": "boolean",
+            "title": "Is Non Local"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "gender": {
+            "type": "string",
+            "title": "Gender"
+          }
+        },
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "birth_date",
+          "contact_info",
+          "course",
+          "grup",
+          "is_non_local",
+          "password",
+          "gender"
+        ],
+        "title": "StudentCreate"
+      },
+      "StudentResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Birth Date"
+          },
+          "contact_info": {
+            "type": "string",
+            "title": "Contact Info"
+          },
+          "course": {
+            "type": "integer",
+            "title": "Course"
+          },
+          "grup": {
+            "type": "integer",
+            "title": "Grup"
+          },
+          "is_non_local": {
+            "type": "boolean",
+            "title": "Is Non Local"
+          },
+          "gender": {
+            "type": "string",
+            "title": "Gender"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "birth_date",
+          "contact_info",
+          "course",
+          "grup",
+          "is_non_local",
+          "gender"
+        ],
+        "title": "StudentResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ViolationCreate": {
+        "properties": {
+          "student_id": {
+            "type": "integer",
+            "title": "Student Id"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "student_id",
+          "description",
+          "date"
+        ],
+        "title": "ViolationCreate"
+      },
+      "ViolationResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "student_id": {
+            "type": "integer",
+            "title": "Student Id"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "violation_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Violation Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "student_id",
+          "description",
+          "violation_date"
+        ],
+        "title": "ViolationResponse"
+      }
+    }
+  }
+}

@@ -7,7 +7,6 @@ router = APIRouter()
 
 db_manager = get_db_manager()
 
-#TODO: fix problem with 501 code
 
 class ViolationCreate(BaseModel):
     student_id: int
@@ -18,7 +17,7 @@ class ViolationResponse(BaseModel):
     id: int
     student_id: int
     description: str
-    date: date
+    violation_date: date
 
     class Config:
         from_attributes = True
@@ -28,7 +27,12 @@ class ViolationResponse(BaseModel):
 
 @router.post("/", response_model=ViolationResponse)
 def create_violation(violation: ViolationCreate):
-    db_manager.violations.add_violation(**violation.dict())
+    violation_data = violation.dict()
+    db_manager.violations.add_violation(
+        student_id=violation_data['student_id'],
+        description=violation_data['description'],
+        violation_date=violation_data['date']
+    )
     return db_manager.violations.get_all_violations()[-1]
 
 @router.get("/", response_model=list[ViolationResponse])

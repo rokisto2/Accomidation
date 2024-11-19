@@ -27,3 +27,8 @@ class FloorRepository:
         if floor:
             self.session.delete(floor)
             self.session.commit()
+
+
+
+    def get_floors_by_dormitory_id(self, dormitory_id):
+        return self.session.query(Floor).filter_by(dormitory_id=dormitory_id).all()

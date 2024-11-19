@@ -18,6 +18,7 @@ class RoomResponse(BaseModel):
     room_type: str
     room_number: int
     bed_count: int
+    occupied_beds: int
 
     class Config:
         from_attributes = True
@@ -50,3 +51,9 @@ def delete_room(room_id: int):
         raise HTTPException(status_code=404, detail="Room not found")
     db_manager.rooms.delete_room(room_id)
     return room
+
+@router.get("/by_floor/{floor_id}", response_model=list[RoomResponse])
+def read_rooms_by_floor(floor_id: int):
+    rooms = db_manager.rooms.get_rooms_by_floor_id(floor_id)
+    return rooms
+

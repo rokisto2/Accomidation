@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base
-from repositories import StudentRepository
+from repositories import StudentRepository, FloorRepository
 from repositories import DormitoryRepository
 from repositories import RoomRepository
 from repositories import ViolationRepository
@@ -25,6 +25,7 @@ class DBManager:
         self.administrations = AdministrationRepository(self.session)
         self.accommodations = AccommodationRepository(self.session)
         self.deanery_staff = DeaneryStaffRepository(self.session)
+        self.floors = FloorRepository(self.session)
 
     def close(self):
         self.session.close()

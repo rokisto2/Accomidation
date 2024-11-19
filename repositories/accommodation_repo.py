@@ -1,4 +1,4 @@
-from models import Accommodation
+from models import Accommodation, Room, Floor
 from datetime import datetime, timedelta
 
 
@@ -32,3 +32,6 @@ class AccommodationRepository:
 
     def get_accommodations_by_student_id(self, student_id):
         return self.session.query(Accommodation).filter(Accommodation.student_id == student_id).first()
+
+    def get_accommodations_by_dormitory_id(self, dormitory_id):
+        return self.session.query(Accommodation).join(Room).join(Floor).filter(Floor.dormitory_id == dormitory_id).all()

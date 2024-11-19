@@ -36,8 +36,9 @@ def authenticate_user(username: str, password: str, user_type: str):
         return False
     return user
 
-def create_access_token(data: dict, expires_delta: timedelta = None):
+def create_access_token(data: dict, user_id: int, expires_delta: timedelta = None):
     to_encode = data.copy()
+    to_encode.update({"user_id": user_id})
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
