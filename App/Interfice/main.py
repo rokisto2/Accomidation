@@ -4,7 +4,7 @@ from PySide6.QtGui import QIcon, QAction
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QWidget, QTabWidget,
     QTableWidget, QTableWidgetItem, QPushButton, QLabel,
-    QLineEdit, QDateEdit, QCheckBox, QHBoxLayout, QMessageBox, QComboBox
+    QLineEdit, QDateEdit, QCheckBox, QHBoxLayout, QMessageBox, QComboBox, QDialogButtonBox
 )
 import sys
 
@@ -21,6 +21,8 @@ class DeaneryStaffMainWindow(QMainWindow):
 
         # Центральный виджет с вкладками
         self.tabs = QTabWidget()
+        self.tabs.setTabsClosable(True)  # Включение возможности закрытия вкладок
+        self.tabs.tabCloseRequested.connect(self.close_tab)  # Подключение сигнала к слоту
         self.setCentralWidget(self.tabs)
 
         # Создание вкладок
@@ -37,6 +39,8 @@ class DeaneryStaffMainWindow(QMainWindow):
         self.tabs.addTab(self.staff_tab, "Работники деканата")
         self.tabs.addTab(self.violations_tab, "Нарушения")
 
+
+
         # Установка содержимого вкладок
         self.setup_dormitories_tab()
         self.setup_admins_tab()
@@ -44,8 +48,194 @@ class DeaneryStaffMainWindow(QMainWindow):
         self.setup_staff_tab()
         self.setup_violations_tab()
 
+        self.accommodate_tab = QWidget()
+        self.setup_accommodate_tab()
+        self.tabs.addTab(self.accommodate_tab, "Заселение")
 
-    #Todo: Выводит только для ожной общаги
+        self.evict_tab = QWidget()
+        self.setup_evict_tab()
+        self.tabs.addTab(self.evict_tab, "Выселение")
+
+    def setup_accommodate_tab(self):
+        layout = QVBoxLayout(self.accommodate_tab)
+
+        dormitory_combo = QComboBox()
+        self.populate_dormitory_combo(dormitory_combo)
+        layout.addWidget(QLabel("Выберите общежитие:"))
+        layout.addWidget(dormitory_combo)
+
+        self.floor_combo = QComboBox()
+        dormitory_combo.currentIndexChanged.connect(
+            lambda: self.load_floor_combo(dormitory_combo.currentData(), self.floor_combo))
+        layout.addWidget(QLabel("Выберите этаж:"))
+        layout.addWidget(self.floor_combo)
+
+        self.room_combo = QComboBox()
+        self.floor_combo.currentIndexChanged.connect(lambda: self.load_room_combo(self.floor_combo.currentData(), self.room_combo))
+        layout.addWidget(QLabel("Выберите комнату:"))
+        layout.addWidget(self.room_combo)
+
+        self.unassigned_student_combo = QComboBox()
+        self.populate_student_combos()
+        layout.addWidget(QLabel("Выберите студента:"))
+        layout.addWidget(self.unassigned_student_combo)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttons.accepted.connect(
+            lambda: self.accommodate_student(self.unassigned_student_combo.currentData(), self.room_combo.currentData()))
+        buttons.rejected.connect(lambda: self.tabs.setCurrentWidget(self.students_tab))
+        layout.addWidget(buttons)
+
+        self.accommodate_tab.setLayout(layout)
+
+
+    def load_floor_combo(self, dormitory_id, combo):
+        response = requests.get(f"http://localhost:8000/api/floors/by_dormitory/{dormitory_id}",
+                                headers={"Authorization": f"Bearer {self.token}"})
+        if response.status_code == 200:
+            floors = response.json()
+            combo.clear()
+            for floor in floors:
+                combo.addItem(f"Этаж {floor['floor_number']}", floor["id"])
+            if floors:
+                combo.setCurrentIndex(0)  # Select the first item
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось загрузить этажи")
+
+    def load_room_combo(self, floor_id, combo):
+        room_type_translation = {"male": "Мужская", "female": "Женская", "family": "Семейная"}
+        response = requests.get(f"http://localhost:8000/api/rooms/by_floor/{floor_id}",
+                                headers={"Authorization": f"Bearer {self.token}"})
+        if response.status_code == 200:
+            rooms = response.json()
+            combo.clear()
+            for room in rooms:
+                if room['occupied_beds'] < room['bed_count']:  # Only show rooms with available beds
+                    room_type_russian = room_type_translation.get(room['room_type'], room['room_type'])
+                    combo.addItem(
+                        f"Комната {room['room_number']} ({room_type_russian}, {room['bed_count']} мест, занято {room['occupied_beds']})",
+                        room['id'])
+            if rooms:
+                combo.setCurrentIndex(0)  # Select the first item
+        elif response.status_code == 422:
+            pass
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось загрузить комнаты")
+
+    def populate_room_combo(self, floor_id, combo):
+        room_type_translation = {"male": "Мужская", "female": "Женская", "family": "Семейная"}
+        response = requests.get(f"http://localhost:8000/api/rooms/by_floor/{floor_id}",
+                                headers={"Authorization": f"Bearer {self.token}"})
+        if response.status_code == 200:
+            rooms = response.json()
+            combo.clear()
+            for room in rooms:
+                room_type_russian = room_type_translation.get(room['room_type'], room['room_type'])
+                combo.addItem(f"Комната {room['room_number']} ({room_type_russian}, {room['bed_count']} мест)",
+                              room['id'])
+            if rooms:
+                combo.setCurrentIndex(0)  # Select the first item
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось загрузить комнаты")
+
+    def setup_evict_tab(self):
+        layout = QVBoxLayout(self.evict_tab)
+
+        self.assigned_student_combo = QComboBox()
+        self.populate_student_combos()
+
+        layout.addWidget(QLabel("Выберите студента:"))
+        layout.addWidget(self.assigned_student_combo)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttons.accepted.connect(lambda: self.evict_student(self.assigned_student_combo.currentData()))
+        buttons.rejected.connect(lambda: self.tabs.setCurrentWidget(self.students_tab))
+        layout.addWidget(buttons)
+
+        self.evict_tab.setLayout(layout)
+
+    def populate_student_combos(self):
+        response_students = requests.get("http://localhost:8000/api/students/")
+        response_accommodations = requests.get("http://localhost:8000/api/accommodations/")
+
+        if response_students.status_code == 200 and response_accommodations.status_code == 200:
+            students = response_students.json()
+            accommodations = response_accommodations.json()
+            assigned_student_ids = {accommodation['student_id'] for accommodation in accommodations}
+
+            unassigned_students = [student for student in students if student['id'] not in assigned_student_ids]
+            assigned_students = [student for student in students if student['id'] in assigned_student_ids]
+            try:
+                self.populate_combo(self.unassigned_student_combo, unassigned_students)
+            except:
+                pass
+            try:
+                self.populate_combo(self.assigned_student_combo, assigned_students)
+            except:
+                pass
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось загрузить данные студентов или заселений")
+
+    def populate_combo(self, combo, students):
+        combo.clear()
+        for student in students:
+            combo.addItem(f"{student['first_name']} {student['last_name']}", student['id'])
+
+    def update_occupied_beds(self, room_id, increment):
+        response = requests.get(f"http://localhost:8000/api/rooms/{room_id}",
+                                headers={"Authorization": f"Bearer {self.token}"})
+        if response.status_code == 200:
+            room = response.json()
+            new_occupied_beds = room['occupied_beds'] + 1 if increment else room['occupied_beds'] - 1
+            data = {"occupied_beds": new_occupied_beds,
+                    "room_type": room['room_type'],
+                    "room_number": room['room_number'],
+                    "floor_id": room['floor_id'],
+                    "bed_count": room['bed_count']}
+            update_response = requests.put(f"http://localhost:8000/api/rooms/{room_id}", json=data,
+                                           headers={"Authorization": f"Bearer {self.token}"})
+            if update_response.status_code != 200:
+                QMessageBox.warning(self, "Ошибка", "Не удалось обновить количество занятых мест в комнате")
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось загрузить данные комнаты")
+
+    def accommodate_student(self, student_id, room_id):
+        data = {"student_id": student_id, "room_id": room_id, "date_from": "2023-01-01"}
+        response = requests.post("http://localhost:8000/api/accommodations/", json=data,
+                                 headers={"Authorization": f"Bearer {self.token}"})
+        if response.status_code == 200:
+            # Update the occupied beds count
+            self.update_occupied_beds(room_id, increment=True)
+            QMessageBox.information(self, "Успех", "Студент успешно заселен")
+            self.populate_student_combos()
+            self.load_room_combo(self.floor_combo.currentData(), self.room_combo)  # Refresh room list
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось заселить студента")
+
+    def evict_student(self, student_id):
+        response = requests.delete(f"http://localhost:8000/api/accommodations/evict/{student_id}",
+                                   headers={"Authorization": f"Bearer {self.token}"})
+        if response.status_code == 200:
+            # Get the room_id from the accommodation details
+            accommodation = response.json()
+            room_id = accommodation['room_id']
+            # Update the occupied beds count
+            self.update_occupied_beds(room_id, increment=False)
+            QMessageBox.information(self, "Успех", "Студент успешно выселен")
+            self.populate_student_combos()
+            self.load_room_combo(self.floor_combo.currentData(), self.room_combo)     # Refresh room list
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось выселить студента")
+
+    def close_tab(self, index):
+        """
+        Закрывает вкладку по индексу.
+        """
+        if index>4:
+            self.tabs.removeTab(index)
+        else:
+            QMessageBox.warning(self, "Ошибка", "Эту вкладку нельзя закрыть")
+
 
 
     def setup_menu(self):
@@ -66,6 +256,9 @@ class DeaneryStaffMainWindow(QMainWindow):
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
 
+        about_autor = QAction(QIcon.fromTheme("help-about"), "Об Авторе", self)
+        about_autor.triggered.connect(self.show_autor)
+        help_menu.addAction(about_autor)
 
 
 
@@ -92,7 +285,17 @@ class DeaneryStaffMainWindow(QMainWindow):
         toolbar.addAction(violations_action)
 
 
-
+    def show_autor(self):
+        """
+        Отображает информацию о программе.
+        """
+        QMessageBox.information(
+            self,
+            "Об авторе",
+            "Author: Oleg Gaponenko\n"
+            "Group Number: 10701323\n"
+            "Email: gaponenkooleg@gmail.com\n"
+        )
 
     def show_about(self):
         """
@@ -101,7 +304,18 @@ class DeaneryStaffMainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "О программе",
-            "Система управления общежитиями\nВерсия 1.0\nАвтор: Ваша команда разработки"
+            "Система управления общежитиями\nВерсия 1.0\n"
+            "Функционал:\n"
+            "- Управление общежитиями: добавление, редактирование и удаление общежитий\n"
+            "- Управление студентами: добавление, редактирование и удаление информации о студентах\n"
+            "- Управление администраторами: добавление, редактирование и удаление администраторов общежитий\n"
+            "- Управление работниками деканата: добавление, редактирование и удаление сотрудников деканата\n"
+            "- Управление нарушениями: добавление, редактирование и удаление записей о нарушениях\n"
+            "- Заселение и выселение студентов: управление процессом заселения и выселения студентов\n"
+            "- Просмотр и редактирование информации о комнатах: управление данными о комнатах в общежитиях\n"
+            "- Просмотр и редактирование информации о этажах: управление данными о этажах в общежитиях\n"
+            "- Управление учетными записями пользователей: создание и управление учетными записями\n"
+            "- Генерация отчетов и статистики: создание отчетов и статистических данных по различным параметрам"
         )
 
     def setup_admins_tab(self):
@@ -237,6 +451,9 @@ class DeaneryStaffMainWindow(QMainWindow):
             combo.clear()
             for dorm in dormitories:
                 combo.addItem(dorm["name"], dorm["id"])
+
+            if dormitories:
+                combo.setCurrentIndex(0)
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось загрузить общежития")
 
@@ -341,7 +558,13 @@ class DeaneryStaffMainWindow(QMainWindow):
         add_student_button.clicked.connect(self.add_student_widget)
         layout.addWidget(add_student_button)
 
+
+
+
         self.load_students()
+
+        self.load_students()
+
 
     def setup_staff_tab(self):
         layout = QVBoxLayout(self.staff_tab)
@@ -454,17 +677,7 @@ class DeaneryStaffMainWindow(QMainWindow):
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось загрузить список студентов")
 
-    def populate_unassigned_student_combo(self, combo):
-        response = requests.get("http://localhost:8000/api/students/unassigned",
-                                headers={"Authorization": f"Bearer {self.token}"})
-        if response.status_code == 200:
-            students = response.json()
-            combo.clear()
-            for student in students:
-                combo.addItem(f"{student['first_name']} {student['last_name']} (Group {student['grup']})",
-                              student['id'])
-        else:
-            QMessageBox.warning(self, "Ошибка", "Не удалось загрузить список студентов")
+
 
     def add_staff_widget(self):
         self.add_form_widget("Добавить работника деканата", ["Имя", "Фамилия", "Контакты", "Пароль"], self.add_staff)
@@ -496,7 +709,6 @@ class DeaneryStaffMainWindow(QMainWindow):
             form_layout.addWidget(label)
             form_layout.addWidget(input_widget)
             inputs[field] = input_widget
-        #TODO: надо чтобы при сохранение закрывался данный виджет
         submit_button = QPushButton("Сохранить")
         submit_button.clicked.connect(lambda: submit_function(inputs))
         form_layout.addWidget(submit_button)
@@ -504,6 +716,10 @@ class DeaneryStaffMainWindow(QMainWindow):
         widget = QWidget()
         widget.setLayout(form_layout)
         self.tabs.addTab(widget, title)
+
+        # Включение кнопки закрытия для новой вкладки
+        self.tabs.setCurrentWidget(widget)
+
 
     def add_dormitory(self, inputs):
         data = {

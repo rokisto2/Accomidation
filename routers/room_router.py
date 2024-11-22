@@ -12,6 +12,15 @@ class RoomCreate(BaseModel):
     room_number: int
     bed_count: int
 
+
+class RoomUpdate(BaseModel):
+    floor_id: int
+    room_type: str
+    room_number: int
+    occupied_beds: int
+    bed_count: int
+
+
 class RoomResponse(BaseModel):
     id: int
     floor_id: int
@@ -40,7 +49,7 @@ def read_room(room_id: int):
     return room
 
 @router.put("/{room_id}", response_model=RoomResponse)
-def update_room(room_id: int, room: RoomCreate):
+def update_room(room_id: int, room: RoomUpdate):
     db_manager.rooms.update_room(room_id, **room.dict())
     return db_manager.rooms.get_room_by_id(room_id)
 

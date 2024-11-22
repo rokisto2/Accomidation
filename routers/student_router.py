@@ -1,3 +1,4 @@
+import logging
 from datetime import date
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -64,7 +65,15 @@ def delete_student(student_id: int):
     db_manager.students.delete_student(student_id)
     return student
 
+
+
 @router.get("/unassigned", response_model=list[StudentResponse])
 def read_unassigned_students():
     unassigned_students = db_manager.students.get_unassigned_students()
     return [StudentResponse.from_orm(student) for student in unassigned_students]
+
+
+@router.get("/assigned", response_model=list[StudentResponse])
+def read_assigned_students():
+    assigned_students = db_manager.students.get_assigned_students()
+    return [StudentResponse.from_orm(student) for student in assigned_students]

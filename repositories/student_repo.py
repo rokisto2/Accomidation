@@ -53,8 +53,9 @@ class StudentRepository:
             func.count(Violation.id).label('violation_count')
             ).outerjoin(Violation, Student.id == Violation.student_id).group_by(Student.id).order_by(Student.course,'violation_count').all()
 
+    def get_assigned_students(self):
+        return self.session.query(Student).join(Accommodation).all()
+
     def get_unassigned_students(self):
-        subquery = self.session.query(Accommodation.student_id).subquery()
-        unassigned_students = self.session.query(Student).filter(Student.id.notin_(subquery)).all()
-        print(unassigned_students)
-        return unassigned_students
+        assigned_student_ids = self.session.query(Accommodation.student_id).distinct()
+        return self.session.query(Student).filter(Student.id.notin_(assigned_student_ids)).all()
