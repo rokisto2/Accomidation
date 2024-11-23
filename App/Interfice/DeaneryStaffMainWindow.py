@@ -138,6 +138,7 @@ class DeaneryStaffMainWindow(QMainWindow):
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось загрузить комнаты")
 
+
     def setup_evict_tab(self):
         layout = QVBoxLayout(self.evict_tab)
 
@@ -795,22 +796,6 @@ class DeaneryStaffMainWindow(QMainWindow):
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось добавить нарушение")
 
-    def populate_room_combo(self, floor_id, combo):
-        """
-        Заполняет выпадающий список комнат на выбранном этаже, переводя тип комнаты на русский.
-        """
-        room_type_translation = {"male": "Мужская", "female": "Женская", "family": "Семейная"}
-        response = requests.get(f"http://localhost:8000/api/rooms/by_floor/{floor_id}",
-                                headers={"Authorization": f"Bearer {self.token}"})
-        if response.status_code == 200:
-            rooms = response.json()
-            combo.clear()
-            for room in rooms:
-                room_type_russian = room_type_translation.get(room['room_type'], room['room_type'])
-                combo.addItem(f"Комната {room['room_number']} ({room_type_russian}, {room['bed_count']} мест)",
-                              room['id'])
-        else:
-            QMessageBox.warning(self, "Ошибка", "Не удалось загрузить комнаты")
 
 
 if __name__ == "__main__":

@@ -201,6 +201,56 @@
         }
       }
     },
+    "/api/students/unassigned": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Read Unassigned Students",
+        "operationId": "read_unassigned_students_api_students_unassigned_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Unassigned Students Api Students Unassigned Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students/assigned": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Read Assigned Students",
+        "operationId": "read_assigned_students_api_students_assigned_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/StudentResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Read Assigned Students Api Students Assigned Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/dormitories/": {
       "get": {
         "tags": [
@@ -524,7 +574,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RoomCreate"
+                "$ref": "#/components/schemas/RoomUpdate"
               }
             }
           }
@@ -1227,6 +1277,48 @@
         }
       }
     },
+    "/api/accommodations/by_dormitory/{dormitory_id}": {
+      "get": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Read Accommodations By Dormitory",
+        "operationId": "read_accommodations_by_dormitory_api_accommodations_by_dormitory__dormitory_id__get",
+        "parameters": [
+          {
+            "name": "dormitory_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dormitory Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/accommodations/distribute": {
       "post": {
         "tags": [
@@ -1287,6 +1379,27 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/accommodations/evict_all/": {
+      "delete": {
+        "tags": [
+          "accommodations"
+        ],
+        "summary": "Evict Student",
+        "operationId": "evict_student_api_accommodations_evict_all__delete",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccommodationResponse"
                 }
               }
             }
@@ -2035,6 +2148,10 @@
           "bed_count": {
             "type": "integer",
             "title": "Bed Count"
+          },
+          "occupied_beds": {
+            "type": "integer",
+            "title": "Occupied Beds"
           }
         },
         "type": "object",
@@ -2043,9 +2160,43 @@
           "floor_id",
           "room_type",
           "room_number",
-          "bed_count"
+          "bed_count",
+          "occupied_beds"
         ],
         "title": "RoomResponse"
+      },
+      "RoomUpdate": {
+        "properties": {
+          "floor_id": {
+            "type": "integer",
+            "title": "Floor Id"
+          },
+          "room_type": {
+            "type": "string",
+            "title": "Room Type"
+          },
+          "room_number": {
+            "type": "integer",
+            "title": "Room Number"
+          },
+          "occupied_beds": {
+            "type": "integer",
+            "title": "Occupied Beds"
+          },
+          "bed_count": {
+            "type": "integer",
+            "title": "Bed Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "floor_id",
+          "room_type",
+          "room_number",
+          "occupied_beds",
+          "bed_count"
+        ],
+        "title": "RoomUpdate"
       },
       "StudentCreate": {
         "properties": {
