@@ -4,7 +4,7 @@ import sys
 
 import jwt
 
-from App.Interfice.AdministratorMainWindow import AdministratorMainWindow
+from App.Interfice.main import AdministratorMainWindow
 from App.Interfice.student_info_window import StudentInfoWindow
 from App.transferDesign.ui_login import Ui_MainWindow # Импортируйте сгенерированный файл напрямую
 
@@ -40,7 +40,7 @@ class LoginWindow(QMainWindow):
                 self.student_info_window = StudentInfoWindow(token, student_id)
                 self.student_info_window.show()
             elif role == "deanery_staff":
-                from App.Interfice.main import DeaneryStaffMainWindow
+                from App.Interfice.DeaneryStaffMainWindow import DeaneryStaffMainWindow
                 self.DeaneryStaffMainWindow = DeaneryStaffMainWindow(token)
                 self.DeaneryStaffMainWindow.show()
             elif role == "administrator":
