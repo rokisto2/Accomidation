@@ -58,6 +58,17 @@ async def read_accommodations_by_dormitory(dormitory_id: int):
     accommodations = db_manager.accommodations.get_accommodations_by_dormitory_id(dormitory_id)
     return accommodations
 
+@router.get("/by_student/{student_id}", response_model=AccommodationResponse)
+async def read_accommodations_by_student(student_id: int):
+    # Replace with actual database query
+    accommodations = db_manager.accommodations.get_accommodations_by_student_id(student_id)
+    if not accommodations:
+        raise HTTPException(status_code=404, detail="Accommodation not found")
+    else:
+        return accommodations
+
+
+
 @router.post("/distribute", response_model=list[AccommodationResponse])
 def distribute_students():
     accommodations = distributeStudents.distribute_students(db_manager)

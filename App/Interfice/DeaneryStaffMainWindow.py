@@ -1,20 +1,27 @@
 import requests
 
-from PySide6.QtGui import QIcon, QAction
+from PySide6.QtGui import QIcon, QAction, QFont
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QWidget, QTabWidget,
     QTableWidget, QTableWidgetItem, QPushButton, QLabel,
-    QLineEdit, QDateEdit, QCheckBox, QHBoxLayout, QMessageBox, QComboBox, QDialogButtonBox
+    QLineEdit, QDateEdit, QCheckBox, QHBoxLayout, QMessageBox, QComboBox, QDialogButtonBox, QFileDialog
 )
 import sys
 
+import pandas as pd
 
+
+#TODO: Добавить просмотр уже заселенных студентов и сохранение это в excel
 class DeaneryStaffMainWindow(QMainWindow):
     def __init__(self, token):
         super().__init__()
         self.token = token
         self.setWindowTitle("Система управления общежитиями")
         self.setGeometry(100, 100, 1200, 800)
+
+
+        font = QFont("Courier", 14)  # Моноширинный шрифт с размером 14
+        self.setFont(font)
 
         # Восстановление панели инструментов и меню
         self.setup_menu()
@@ -31,6 +38,7 @@ class DeaneryStaffMainWindow(QMainWindow):
         self.staff_tab = QWidget()
         self.violations_tab = QWidget()
         self.admins_tab = QWidget()
+
 
         self.tabs.addTab(self.dormitories_tab, "Общежития")
         self.tabs.addTab(self.students_tab, "Студенты")
@@ -55,6 +63,53 @@ class DeaneryStaffMainWindow(QMainWindow):
         self.evict_tab = QWidget()
         self.setup_evict_tab()
         self.tabs.addTab(self.evict_tab, "Выселение")
+
+        self.accommodated_students_tab = QWidget()
+        self.tabs.addTab(self.accommodated_students_tab, "Заселенные студенты")
+        self.setup_accommodated_students_tab()
+
+    def setup_accommodated_students_tab(self):
+        layout = QVBoxLayout(self.accommodated_students_tab)
+
+        self.accommodated_students_table = QTableWidget()
+        self.accommodated_students_table.setColumnCount(5)
+        self.accommodated_students_table.setHorizontalHeaderLabels([
+            "Студент", "Номер комнаты", "Номер этажа", "Название общежития", "Дата заселения"
+        ])
+
+        refresh_button = QPushButton("Обновить данные")
+        refresh_button.clicked.connect(self.load_accommodated_students)
+
+        save_button = QPushButton("Сохранить в Excel")
+        save_button.clicked.connect(self.save_accommodated_students_to_excel)
+
+
+        layout.addWidget(self.accommodated_students_table)
+        layout.addWidget(refresh_button)
+        layout.addWidget(save_button)
+
+        self.accommodated_students_tab.setLayout(layout)
+        self.load_accommodated_students()
+
+    def load_accommodated_students(self):
+        response = requests.get("http://localhost:8000/api/accommodations/",
+                                headers={"Authorization": f"Bearer {self.token}"})
+        if response.status_code == 200:
+            accommodations = response.json()
+            self.accommodated_students_table.setRowCount(len(accommodations))
+            for row, accommodation in enumerate(accommodations):
+                student = self.get_student_by_id(accommodation["student_id"])
+                room = self.get_room_by_id(accommodation["room_id"])
+                floor = self.get_floor_by_id(room["floor_id"])
+                dormitory = self.get_dormitory_by_room_id(room["id"])
+                self.accommodated_students_table.setItem(row, 0, QTableWidgetItem(
+                    f"{student['last_name']} {student['first_name']}"))
+                self.accommodated_students_table.setItem(row, 1, QTableWidgetItem(str(room["room_number"])))
+                self.accommodated_students_table.setItem(row, 2, QTableWidgetItem(str(floor["floor_number"])))
+                self.accommodated_students_table.setItem(row, 3, QTableWidgetItem(dormitory["name"]))
+                self.accommodated_students_table.setItem(row, 4, QTableWidgetItem(accommodation["date_from"]))
+        else:
+            QMessageBox.critical(self, "Ошибка", "Не удалось загрузить данные о заселении")
 
     def setup_accommodate_tab(self):
         layout = QVBoxLayout(self.accommodate_tab)
@@ -86,8 +141,77 @@ class DeaneryStaffMainWindow(QMainWindow):
         buttons.rejected.connect(lambda: self.tabs.setCurrentWidget(self.students_tab))
         layout.addWidget(buttons)
 
+        # Добавление кнопки для заселения всех студентов
+        self.accommodate_all_button = QPushButton("Автоматическое заселение")
+        self.accommodate_all_button.clicked.connect(self.accommodate_all_students)
+        layout.addWidget(self.accommodate_all_button)
+
         self.accommodate_tab.setLayout(layout)
 
+    def accommodate_all_students(self):
+        response = requests.post("http://localhost:8000/api/accommodations/distribute")
+        if response.status_code == 200:
+            accommodations = response.json()
+            self.show_accommodation_results(accommodations)
+        else:
+            QMessageBox.warning(self, "Ошибка", "Не удалось заселить всех студентов")
+
+    def show_accommodation_results(self, accommodations):
+        results_tab = QWidget()
+        layout = QVBoxLayout(results_tab)
+
+        table = QTableWidget()
+        table.setColumnCount(3)
+        table.setHorizontalHeaderLabels(["Студент", "Комната", "Общага"])
+        table.setSortingEnabled(True)  # Enable sorting
+
+        for accommodation in accommodations:
+            student = self.get_student_by_id(accommodation['student_id'])
+            room = self.get_room_by_id(accommodation['room_id'])
+            dormitory = self.get_dormitory_by_room_id(accommodation['room_id'])
+            row_position = table.rowCount()
+            table.insertRow(row_position)
+            student_info = f"{student['last_name']} {student['first_name']} (Группа: {student['grup']})"
+            table.setItem(row_position, 0, QTableWidgetItem(student_info))
+            table.setItem(row_position, 1, QTableWidgetItem(str(room['room_number'])))
+            table.setItem(row_position, 2, QTableWidgetItem(dormitory['name']))
+
+        layout.addWidget(table)
+        results_tab.setLayout(layout)
+        self.tabs.addTab(results_tab, "Результаты заселения")
+        self.tabs.setCurrentWidget(results_tab)
+
+    def get_dormitory_by_room_id(self, room_id):
+        room = self.get_room_by_id(room_id)
+        floor_id = room['floor_id']
+        floor = self.get_floor_by_id(floor_id)
+        dormitory_id = floor['dormitory_id']
+        response = requests.get(f"http://localhost:8000/api/dormitories/{dormitory_id}")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
+
+    def get_floor_by_id(self, floor_id):
+        response = requests.get(f"http://localhost:8000/api/floors/{floor_id}")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
+
+    def get_student_by_id(self, student_id):
+        response = requests.get(f"http://localhost:8000/api/students/{student_id}")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
+
+    def get_room_by_id(self, room_id):
+        response = requests.get(f"http://localhost:8000/api/rooms/{room_id}")
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
 
     def load_floor_combo(self, dormitory_id, combo):
         response = requests.get(f"http://localhost:8000/api/floors/by_dormitory/{dormitory_id}",
@@ -180,7 +304,7 @@ class DeaneryStaffMainWindow(QMainWindow):
     def populate_combo(self, combo, students):
         combo.clear()
         for student in students:
-            combo.addItem(f"{student['first_name']} {student['last_name']}", student['id'])
+            combo.addItem(f"{student['last_name']} {student['first_name']}", student['id'])
 
     def update_occupied_beds(self, room_id, increment):
         response = requests.get(f"http://localhost:8000/api/rooms/{room_id}",
@@ -232,12 +356,29 @@ class DeaneryStaffMainWindow(QMainWindow):
         """
         Закрывает вкладку по индексу.
         """
-        if index>4:
+        if index>6:
             self.tabs.removeTab(index)
-        else:
-            QMessageBox.warning(self, "Ошибка", "Эту вкладку нельзя закрыть")
 
+    def save_accommodated_students_to_excel(self):
+        options = QFileDialog.Options()
+        file_path, _ = QFileDialog.getSaveFileName(self, "Сохранить файл", "", "Excel Files (*.xlsx);;All Files (*)",
+                                                   options=options)
+        if file_path:
+            self.export_to_excel(file_path)
 
+    def export_to_excel(self, file_path):
+        data = []
+        for row in range(self.accommodated_students_table.rowCount()):
+            row_data = []
+            for column in range(self.accommodated_students_table.columnCount()):
+                item = self.accommodated_students_table.item(row, column)
+                row_data.append(item.text() if item else "")
+            data.append(row_data)
+
+        df = pd.DataFrame(data, columns=[
+            "Cтудент", "Номер комнаты", "Номер этажа", "Название общежития", "Дата заселения"
+        ])
+        df.to_excel(file_path, index=False)
 
     def setup_menu(self):
         """
@@ -250,6 +391,9 @@ class DeaneryStaffMainWindow(QMainWindow):
         exit_action = QAction(QIcon.fromTheme("application-exit"), "Выход", self)
         exit_action.triggered.connect(self.close_application)
         file_menu.addAction(exit_action)
+        save_action = QAction(QIcon(), "Сохранить списки заселенных студентов в excel", self)
+        save_action.triggered.connect(self.save_accommodated_students_to_excel)
+        file_menu.addAction(save_action)
 
         # Меню "Справка"
         help_menu = menu_bar.addMenu("Справка")
@@ -292,37 +436,14 @@ class DeaneryStaffMainWindow(QMainWindow):
 
 
     def show_autor(self):
-        """
-        Отображает информацию о программе.
-        """
-        QMessageBox.information(
-            self,
-            "Об авторе",
-            "Author: Oleg Gaponenko\n"
-            "Group Number: 10701323\n"
-            "Email: gaponenkooleg@gmail.com\n"
-        )
+        from App.Interfice.AutorInfoWindow import AutorWindow
+        self.autorWindow = AutorWindow()
+        self.autorWindow.show()
 
     def show_about(self):
-        """
-        Отображает информацию о программе.
-        """
-        QMessageBox.information(
-            self,
-            "О программе",
-            "Система управления общежитиями\nВерсия 1.0\n"
-            "Функционал:\n"
-            "- Управление общежитиями: добавление, редактирование и удаление общежитий\n"
-            "- Управление студентами: добавление, редактирование и удаление информации о студентах\n"
-            "- Управление администраторами: добавление, редактирование и удаление администраторов общежитий\n"
-            "- Управление работниками деканата: добавление, редактирование и удаление сотрудников деканата\n"
-            "- Управление нарушениями: добавление, редактирование и удаление записей о нарушениях\n"
-            "- Заселение и выселение студентов: управление процессом заселения и выселения студентов\n"
-            "- Просмотр и редактирование информации о комнатах: управление данными о комнатах в общежитиях\n"
-            "- Просмотр и редактирование информации о этажах: управление данными о этажах в общежитиях\n"
-            "- Управление учетными записями пользователей: создание и управление учетными записями\n"
-            "- Генерация отчетов и статистики: создание отчетов и статистических данных по различным параметрам"
-        )
+        from App.Interfice.AboutWindow import AboutWindow
+        self.about_window = AboutWindow()
+        self.about_window.exec()
 
     def setup_admins_tab(self):
         layout = QVBoxLayout(self.admins_tab)
@@ -330,7 +451,9 @@ class DeaneryStaffMainWindow(QMainWindow):
         # Таблица для отображения администраторов
         self.admins_table = QTableWidget()
         self.admins_table.setColumnCount(4)
-        self.admins_table.setHorizontalHeaderLabels(["Имя", "Фамилия", "Контакты", "Общежитие"])
+        self.admins_table.setHorizontalHeaderLabels(["Фамилия", "Имя", "Контакты", "Общежитие"])
+        self.admins_table.setSortingEnabled(True)
+
         layout.addWidget(self.admins_table)
 
         # Управляющая кнопка
@@ -351,15 +474,15 @@ class DeaneryStaffMainWindow(QMainWindow):
                                                   headers={"Authorization": f"Bearer {self.token}"})
                 dormitory_name = dormitory_response.json()[
                     'name'] if dormitory_response.status_code == 200 else "Неизвестно"
-                self.admins_table.setItem(i, 0, QTableWidgetItem(admin['first_name']))
-                self.admins_table.setItem(i, 1, QTableWidgetItem(admin['last_name']))
+                self.admins_table.setItem(i, 0, QTableWidgetItem(admin['last_name']))
+                self.admins_table.setItem(i, 1, QTableWidgetItem(admin['first_name']))
                 self.admins_table.setItem(i, 2, QTableWidgetItem(admin['contact_info']))
                 self.admins_table.setItem(i, 3, QTableWidgetItem(dormitory_name))
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось загрузить администраторов")
 
     def add_admin_widget(self):
-        fields = ["Имя", "Фамилия", "Контакты", "Общежитие", "Пароль"]
+        fields = ["ИмяФамилия", "Имя", "Контакты", "Общежитие", "Пароль"]
         self.add_form_widget("Добавить администратора", fields, self.add_admin)
 
     def add_admin(self, inputs):
@@ -385,6 +508,8 @@ class DeaneryStaffMainWindow(QMainWindow):
         self.dormitories_table = QTableWidget()
         self.dormitories_table.setColumnCount(3)
         self.dormitories_table.setHorizontalHeaderLabels(["Название", "Адрес", "Описание"])
+        self.dormitories_table.setSortingEnabled(True)  # Enable sorting
+
         layout.addWidget(self.dormitories_table)
 
         # Управляющие кнопки
@@ -513,10 +638,17 @@ class DeaneryStaffMainWindow(QMainWindow):
             QMessageBox.warning(self, "Ошибка", "Не удалось загрузить комнаты")
             return
 
+        room_type_translation = {
+            "Мужская": "male",
+            "Женская": "female",
+            "Семейная": "family"
+        }
+        room_type_english = room_type_translation.get(room_type, room_type)
+
         # Отправка данных
         data = {
             "floor_id": floor_id,
-            "room_type": room_type.lower(),  # Тип комнаты на английском
+            "room_type": room_type_english,  # Тип комнаты на английском
             "room_number": next_room_number,
             "bed_count": bed_count
         }
@@ -548,7 +680,11 @@ class DeaneryStaffMainWindow(QMainWindow):
         remove_button.clicked.connect(confirm_removal)
         layout.addWidget(remove_button)
         dialog.setWindowTitle("Удаление комнаты")
-        dialog.show()
+        dialog.setLayout(layout)
+
+        self.tabs.addTab(dialog, "Удаление комнаты")
+        self.tabs.setCurrentWidget(dialog)
+
 
     def setup_students_tab(self):
         layout = QVBoxLayout(self.students_tab)
@@ -556,7 +692,9 @@ class DeaneryStaffMainWindow(QMainWindow):
         # Таблица для отображения студентов
         self.students_table = QTableWidget()
         self.students_table.setColumnCount(5)
-        self.students_table.setHorizontalHeaderLabels(["Имя", "Фамилия", "Курс", "Группа", "Иногородний"])
+        self.students_table.setHorizontalHeaderLabels(["Фамилия", "Имя", "Курс", "Группа", "Иногородний"])
+        self.students_table.setSortingEnabled(True)  # Enable sorting
+
         layout.addWidget(self.students_table)
 
         # Управляющая кнопка
@@ -578,7 +716,9 @@ class DeaneryStaffMainWindow(QMainWindow):
         # Таблица для отображения персонала
         self.staff_table = QTableWidget()
         self.staff_table.setColumnCount(3)
-        self.staff_table.setHorizontalHeaderLabels(["Имя", "Фамилия", "Контакты"])
+        self.staff_table.setHorizontalHeaderLabels(["Фамилия", "Имя", "Контакты"])
+        self.staff_table.setSortingEnabled(True)  # Enable sorting
+
         layout.addWidget(self.staff_table)
 
         # Управляющая кнопка
@@ -595,6 +735,8 @@ class DeaneryStaffMainWindow(QMainWindow):
         self.violations_table = QTableWidget()
         self.violations_table.setColumnCount(3)
         self.violations_table.setHorizontalHeaderLabels(["Студент", "Описание", "Дата"])
+        self.violations_table.setSortingEnabled(True)  # Enable sorting
+
         layout.addWidget(self.violations_table)
 
         # Управляющая кнопка
@@ -623,8 +765,8 @@ class DeaneryStaffMainWindow(QMainWindow):
             students = response.json()
             self.students_table.setRowCount(len(students))
             for i, student in enumerate(students):
-                self.students_table.setItem(i, 0, QTableWidgetItem(student["first_name"]))
-                self.students_table.setItem(i, 1, QTableWidgetItem(student["last_name"]))
+                self.students_table.setItem(i, 0, QTableWidgetItem(student["last_name"]))
+                self.students_table.setItem(i, 1, QTableWidgetItem(student["first_name"]))
                 self.students_table.setItem(i, 2, QTableWidgetItem(str(student["course"])))
                 self.students_table.setItem(i, 3, QTableWidgetItem(str(student["grup"])))
                 self.students_table.setItem(i, 4, QTableWidgetItem("Да" if student["is_non_local"] else "Нет"))
@@ -637,8 +779,8 @@ class DeaneryStaffMainWindow(QMainWindow):
             staff = response.json()
             self.staff_table.setRowCount(len(staff))
             for i, member in enumerate(staff):
-                self.staff_table.setItem(i, 0, QTableWidgetItem(member["first_name"]))
-                self.staff_table.setItem(i, 1, QTableWidgetItem(member["last_name"]))
+                self.staff_table.setItem(i, 0, QTableWidgetItem(member["last_name"]))
+                self.staff_table.setItem(i, 1, QTableWidgetItem(member["first_name"]))
                 self.staff_table.setItem(i, 2, QTableWidgetItem(member["contact_info"]))
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось загрузить список сотрудников")
@@ -654,7 +796,7 @@ class DeaneryStaffMainWindow(QMainWindow):
                                                 headers={"Authorization": f"Bearer {self.token}"})
                 if student_response.status_code == 200:
                     student = student_response.json()
-                    student_info = f"{student['first_name']} {student['last_name']} (Группа: {student['grup']})"
+                    student_info = f"{student['last_name']} {student['first_name']} (Группа: {student['grup']})"
                     self.violations_table.setItem(i, 0, QTableWidgetItem(student_info))
                 else:
                     self.violations_table.setItem(i, 0, QTableWidgetItem("Неизвестный студент"))
@@ -678,7 +820,7 @@ class DeaneryStaffMainWindow(QMainWindow):
         if response.status_code == 200:
             students = response.json()
             for student in students:
-                combo.addItem(f"{student['first_name']} {student['last_name']} (Group {student['grup']})",
+                combo.addItem(f"{student['last_name']} {student['first_name']} (Group {student['grup']})",
                               student['id'])
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось загрузить список студентов")

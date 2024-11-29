@@ -4,7 +4,7 @@ import sys
 
 import jwt
 
-from App.Interfice.main import AdministratorMainWindow
+from App.Interfice.AdministratorMainWindow import AdministratorMainWindow
 from App.Interfice.student_info_window import StudentInfoWindow
 from App.transferDesign.ui_login import Ui_MainWindow # Импортируйте сгенерированный файл напрямую
 
@@ -48,8 +48,16 @@ class LoginWindow(QMainWindow):
                                               headers={"Authorization": f"Bearer {token}"})
                 if admin_response.status_code == 200:
                     dormitory_id = admin_response.json().get("dormitory_id")
-                    self.administrator_main_window = AdministratorMainWindow(token, dormitory_id)
-                    self.administrator_main_window.show()
+                    dormitory_response = requests.get(f"http://localhost:8000/api/dormitories/{dormitory_id}",
+                                                      headers={"Authorization": f"Bearer {token}"})
+                    if dormitory_response.status_code == 200:
+                        dormitory_data = dormitory_response.json()
+                        dormitory_name = dormitory_data.get("name")
+                        dormitory_address = dormitory_data.get("address")
+
+                        self.administrator_main_window = AdministratorMainWindow(token, dormitory_id, dormitory_name,
+                                                                                 dormitory_address)
+                        self.administrator_main_window.show()
             self.close()
         else:
             QMessageBox.warning(self, "Login Failed", "Invalid username or password")

@@ -1,6 +1,9 @@
-from PySide6.QtGui import QAction, QIcon
-from PySide6.QtWidgets import ( QPushButton)
-
+from PySide6.QtGui import QAction, QIcon, QFont
+from PySide6.QtWidgets import (
+    QMainWindow, QVBoxLayout, QTabWidget, QWidget, QComboBox, QLabel,
+    QGridLayout, QScrollArea, QPushButton, QMessageBox, QTableWidget, QTableWidgetItem, QDialog, QFormLayout, QLineEdit, QDateEdit, QDialogButtonBox
+)
+import requests
 
 
 class RoomButton(QPushButton):
@@ -9,8 +12,10 @@ class RoomButton(QPushButton):
         self.room = room
         self.token = token
         self.setText(f"Комната {room['room_number']}")
-        self.setFixedSize(100, 100)
+        self.setFixedSize(130, 130)
         self.update_color()
+
+
 
     def update_color(self):
         if self.room['bed_count'] == self.room['occupied_beds']:
@@ -62,18 +67,23 @@ from PySide6.QtWidgets import (
     QGridLayout, QScrollArea, QPushButton, QMessageBox, QTableWidget, QTableWidgetItem, QDialog, QFormLayout, QLineEdit,
     QDateEdit, QDialogButtonBox, QMenuBar,
 )
-from PySide6.QtCore import Qt
-import requests
+
 
 
 class AdministratorMainWindow(QMainWindow):
-    def __init__(self, token, dormitory_id):
+    def __init__(self, token, dormitory_id, dormitory_name, dormitory_address):
         super().__init__()
         self.token = token
         self.dormitory_id = dormitory_id
+        self.dormitory_name = dormitory_name
+        self.dormitory_address = dormitory_address
 
-        self.setWindowTitle("Система управления общежитиями")
+        self.setWindowTitle(f"Система управления общежитиями - {self.dormitory_name}")
         self.setGeometry(100, 100, 1200, 800)
+
+
+        font = QFont("Courier", 14)  # Моноширинный шрифт с размером 14
+        self.setFont(font)
 
         # Добавляем меню с кнопкой выхода
         self.setup_menu()
@@ -82,11 +92,23 @@ class AdministratorMainWindow(QMainWindow):
         self.tabs = QTabWidget()
         self.setCentralWidget(self.tabs)
 
+        self.tabs.setTabsClosable(True)  # Включение возможности закрытия вкладок
+        self.tabs.tabCloseRequested.connect(self.close_tab)  #
+
         self.rooms_tab = QWidget()
         self.tabs.addTab(self.rooms_tab, "Комнаты")
 
         # Устанавливаем содержимое вкладки комнат
         self.setup_rooms_tab()
+        address_label = QLabel(f"Адрес: {self.dormitory_address}")
+        self.statusBar().addWidget(address_label)
+
+    def close_tab(self, index):
+        """
+        Закрывает вкладку по индексу.
+        """
+        if index > 0:
+            self.tabs.removeTab(index)
 
     def setup_menu(self):
         """Добавляем меню с кнопкой выхода."""
@@ -109,39 +131,15 @@ class AdministratorMainWindow(QMainWindow):
         about_autor.triggered.connect(self.show_autor)
         help_menu.addAction(about_autor)
 
-
     def show_autor(self):
-        """
-        Отображает информацию о программе.
-        """
-        QMessageBox.information(
-            self,
-            "Об авторе",
-            "Author: Oleg Gaponenko\n"
-            "Group Number: 10701323\n"
-            "Email: gaponenkooleg@gmail.com\n"
-        )
+        from App.Interfice.AutorInfoWindow import AutorWindow
+        self.autorWindow = AutorWindow()
+        self.autorWindow.show()
 
     def show_about(self):
-        """
-        Отображает информацию о программе.
-        """
-        QMessageBox.information(
-            self,
-            "О программе",
-            "Система управления общежитиями\nВерсия 1.0\n"
-            "Функционал:\n"
-            "- Управление общежитиями: добавление, редактирование и удаление общежитий\n"
-            "- Управление студентами: добавление, редактирование и удаление информации о студентах\n"
-            "- Управление администраторами: добавление, редактирование и удаление администраторов общежитий\n"
-            "- Управление работниками деканата: добавление, редактирование и удаление сотрудников деканата\n"
-            "- Управление нарушениями: добавление, редактирование и удаление записей о нарушениях\n"
-            "- Заселение и выселение студентов: управление процессом заселения и выселения студентов\n"
-            "- Просмотр и редактирование информации о комнатах: управление данными о комнатах в общежитиях\n"
-            "- Просмотр и редактирование информации о этажах: управление данными о этажах в общежитиях\n"
-            "- Управление учетными записями пользователей: создание и управление учетными записями\n"
-            "- Генерация отчетов и статистики: создание отчетов и статистических данных по различным параметрам"
-        )
+        from App.Interfice.AboutWindow import AboutWindow
+        self.about_window = AboutWindow()
+        self.about_window.exec()
 
     def close_application(self):
         from App.Interfice.Login import LoginWindow
@@ -225,7 +223,8 @@ class AdministratorMainWindow(QMainWindow):
         # Таблица студентов
         students_table = QTableWidget()
         students_table.setColumnCount(5)
-        students_table.setHorizontalHeaderLabels(["Имя", "Фамилия", "Группа", "Посмотреть акты", "Выписать акт"])
+        students_table.setHorizontalHeaderLabels(["Фамилия", "Имя", "Группа", "Посмотреть акты", "Выписать акт"])
+        students_table.setSortingEnabled(True)
         layout.addWidget(students_table)
 
         # Загрузка данных студентов
@@ -240,8 +239,8 @@ class AdministratorMainWindow(QMainWindow):
             ]
             students_table.setRowCount(len(students))
             for i, student in enumerate(students):
-                students_table.setItem(i, 0, QTableWidgetItem(student['first_name']))
-                students_table.setItem(i, 1, QTableWidgetItem(student['last_name']))
+                students_table.setItem(i, 0, QTableWidgetItem(student['last_name']))
+                students_table.setItem(i, 1, QTableWidgetItem(student['first_name']))
                 students_table.setItem(i, 2, QTableWidgetItem(str(student['grup'])))
 
                 # Кнопка "Посмотреть акты"
@@ -262,13 +261,15 @@ class AdministratorMainWindow(QMainWindow):
 
     def open_student_details(self, student):
         dialog = QDialog(self)
-        dialog.setWindowTitle(f"Акты студента {student['first_name']} {student['last_name']}")
+        dialog.setWindowTitle(f"Акты студента {student['last_name']} {student['first_name']}")
         layout = QVBoxLayout(dialog)
 
         # Таблица актов
         acts_table = QTableWidget()
         acts_table.setColumnCount(2)
         acts_table.setHorizontalHeaderLabels(["Описание", "Дата"])
+        acts_table.setSortingEnabled(True)  # Enable sorting
+
         layout.addWidget(acts_table)
 
         # Загрузка актов
@@ -289,7 +290,7 @@ class AdministratorMainWindow(QMainWindow):
 
     def add_act_dialog(self, student):
         dialog = QDialog(self)
-        dialog.setWindowTitle(f"Выписать акт для {student['first_name']} {student['last_name']}")
+        dialog.setWindowTitle(f"Выписать акт для {student['last_name']} {student['first_name']}")
         layout = QFormLayout(dialog)
 
         description_input = QLineEdit()
