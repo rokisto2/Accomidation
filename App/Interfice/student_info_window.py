@@ -6,6 +6,7 @@ class StudentInfoWindow(QMainWindow):
     def __init__(self, token, student_id):
         super().__init__()
 
+        self.rowTable = None
         font = QFont("Courier", 14)  # Моноширинный шрифт с размером 14
         self.setFont(font)
 
@@ -26,7 +27,7 @@ class StudentInfoWindow(QMainWindow):
 
         self.violations_table = QTableWidget()
         self.violations_table.setColumnCount(2)
-        self.violations_table.setHorizontalHeaderLabels(["Description", "Date"])
+        self.violations_table.setHorizontalHeaderLabels(["Описание", "Дата"])
         self.violations_table.setSortingEnabled(True)  # Enable sorting
 
         layout.addWidget(self.violations_table)
@@ -65,7 +66,7 @@ class StudentInfoWindow(QMainWindow):
     def show_about(self):
         from App.Interfice.AboutWindow import AboutWindow
         self.about_window = AboutWindow()
-        self.about_window.exec()
+        self.about_window.show()
 
 
     def close_application(self):
@@ -79,12 +80,11 @@ class StudentInfoWindow(QMainWindow):
         student_response = requests.get(f"http://localhost:8000/api/students/{self.student_id}", headers={"Authorization": f"Bearer {self.token}"})
         if student_response.status_code == 200:
             student_data = student_response.json()
-            self.student_info_label.setText(f"Имя Фавмилия: {student_data['first_name']} {student_data['last_name']}\n"
+            self.student_info_label.setText(f"Фамилия Имя: {student_data['last_name']} {student_data['first_name']}\n"
                                             f"Дата рождения: {student_data['birth_date']}\n"
                                             f"Контактная информация: {student_data['contact_info']}\n"
                                             f"курс: {student_data['course']}\n"
-                                            f"Группа: {student_data['grup']}\n"
-                                            f"Пол: {student_data['gender']}")
+                                            f"Группа: {student_data['grup']}\n")
 
 
             violations_response = requests.get(f"http://localhost:8000/api/violations/", headers={"Authorization": f"Bearer {self.token}"})
@@ -93,13 +93,17 @@ class StudentInfoWindow(QMainWindow):
                 self.len_violations_table = 0
 
                 for row, violation in enumerate(violations_data):
-                    if int(violation["student_id"]) == self.student_id:
+                    if int(violation["student_id"]) == int(self.student_id):
                         self.len_violations_table+=1
 
 
                 self.violations_table.setRowCount(self.len_violations_table)
+                self.rowTable = 0
+                for row, violation in  enumerate(violations_data):
 
-                for row, violation in enumerate(violations_data):
-                    if int(violation["student_id"]) == self.student_id:
-                        self.violations_table.setItem(row, 1, QTableWidgetItem(violation['description']))
-                        self.violations_table.setItem(row, 2, QTableWidgetItem(violation['date']))
+                    if int(violation["student_id"]) == int(self.student_id):
+
+                        self.violations_table.setItem(self.rowTable, 0, QTableWidgetItem(violation['description']))
+                        self.violations_table.setItem(self.rowTable, 1, QTableWidgetItem(violation['violation_date']))
+
+                        self.rowTable+=1

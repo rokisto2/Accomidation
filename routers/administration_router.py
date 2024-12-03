@@ -1,4 +1,3 @@
-# routers/administration_router.py
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from db_manager_factory import get_db_manager

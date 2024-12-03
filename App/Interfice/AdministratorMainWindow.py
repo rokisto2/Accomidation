@@ -139,7 +139,7 @@ class AdministratorMainWindow(QMainWindow):
     def show_about(self):
         from App.Interfice.AboutWindow import AboutWindow
         self.about_window = AboutWindow()
-        self.about_window.exec()
+        self.about_window.show()
 
     def close_application(self):
         from App.Interfice.Login import LoginWindow

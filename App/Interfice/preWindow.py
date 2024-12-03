@@ -4,6 +4,10 @@ import sys
 
 from App.transferDesign.ui_mainWindow import Ui_MainWindow # Импортируйте сгенерированный файл напрямую
 
+import requests
+import jwt
+import pandas
+
 class LoginWindow(QMainWindow):
     def __init__(self):
         super().__init__()

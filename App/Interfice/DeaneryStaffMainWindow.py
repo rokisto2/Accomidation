@@ -11,7 +11,6 @@ import sys
 import pandas as pd
 
 
-#TODO: Добавить просмотр уже заселенных студентов и сохранение это в excel
 class DeaneryStaffMainWindow(QMainWindow):
     def __init__(self, token):
         super().__init__()
@@ -67,6 +66,7 @@ class DeaneryStaffMainWindow(QMainWindow):
         self.accommodated_students_tab = QWidget()
         self.tabs.addTab(self.accommodated_students_tab, "Заселенные студенты")
         self.setup_accommodated_students_tab()
+
 
     def setup_accommodated_students_tab(self):
         layout = QVBoxLayout(self.accommodated_students_tab)
@@ -443,7 +443,7 @@ class DeaneryStaffMainWindow(QMainWindow):
     def show_about(self):
         from App.Interfice.AboutWindow import AboutWindow
         self.about_window = AboutWindow()
-        self.about_window.exec()
+        self.about_window.show()
 
     def setup_admins_tab(self):
         layout = QVBoxLayout(self.admins_tab)
@@ -904,6 +904,7 @@ class DeaneryStaffMainWindow(QMainWindow):
         if response.status_code == 200:
             QMessageBox.information(self, "Успех", "Студент добавлен!")
             self.load_students()
+            self.load_accommodated_students()
         else:
             QMessageBox.warning(self, "Ошибка", "Не удалось добавить студента")
 

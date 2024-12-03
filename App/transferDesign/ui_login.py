@@ -104,5 +104,5 @@ class Ui_MainWindow(object):
         self.password.setPlaceholderText(_translate("MainWindow", "Введите пароль"))
         self.loginButton.setText(_translate("MainWindow", "Войти"))
         self.radioStudent.setText(_translate("MainWindow", "Студент"))
-        self.radioAdministration.setText(_translate("MainWindow", "Админестратор"))
+        self.radioAdministration.setText(_translate("MainWindow", "Администратор"))
         self.radioDeaneryStaff.setText(_translate("MainWindow", "Работник деканата"))

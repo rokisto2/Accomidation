@@ -1,39 +1,20 @@
-from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+import sys
 
-class AboutWindow(QDialog):
+from App.transferDesign.ui_programmWindow  import Ui_MainWindow # Импортируйте сгенерированный файл напрямую
+
+class AboutWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("О программе")
-        self.setGeometry(100, 100, 800, 300)
-        font = QFont("Courier", 14)  # Моноширинный шрифт с размером 14
-        self.setFont(font)
-        layout = QVBoxLayout()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
 
-        about_text = """
-        <h2>Система управления общежитиями</h2>
-        <p>Версия 1.0</p>
-        <p>Функционал:</p>
-        <ul>
-            <li>Управление общежитиями: добавление, редактирование и удаление общежитий</li>
-            <li>Управление студентами: добавление, редактирование и удаление информации о студентах</li>
-            <li>Управление администраторами: добавление, редактирование и удаление администраторов общежитий</li>
-            <li>Управление работниками деканата: добавление, редактирование и удаление сотрудников деканата</li>
-            <li>Управление нарушениями: добавление, редактирование и удаление записей о нарушениях</li>
-            <li>Заселение и выселение студентов: управление процессом заселения и выселения студентов</li>
-            <li>Просмотр и редактирование информации о комнатах: управление данными о комнатах в общежитиях</li>
-            <li>Просмотр и редактирование информации о этажах: управление данными о этажах в общежитиях</li>
-            <li>Управление учетными записями пользователей: создание и управление учетными записями</li>
-            <li>Генерация отчетов и статистики: создание отчетов и статистических данных по различным параметрам</li>
-        </ul>
-        """
 
-        label = QLabel(about_text)
-        label.setWordWrap(True)
-        layout.addWidget(label)
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
 
-        close_button = QPushButton("Закрыть")
-        close_button.clicked.connect(self.close)
-        layout.addWidget(close_button)
+    window = AboutWindow()
+    window.show()
 
-        self.setLayout(layout)
+    sys.exit(app.exec())
